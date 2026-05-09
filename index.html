@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Bill Splitter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <h1>Smart Bill Splitter</h1>
+
+    <!-- USERS -->
+    <section>
+      <h2>Add User</h2>
+      <input id="name" placeholder="Name">
+      <input id="roomSize" type="number" placeholder="Room Size">
+      <input id="days" type="number" placeholder="Days Present">
+      <button onclick="addUser()">Add User</button>
+    </section>
+
+    <!-- BILLS -->
+    <section>
+      <h2>Add Bill</h2>
+      <input id="billType" placeholder="Type (electricity, rent...)">
+      <input id="amount" type="number" placeholder="Amount">
+
+      <select id="splitType">
+        <option value="equal">Equal</option>
+        <option value="presence">Presence</option>
+        <option value="room_size">Room Size</option>
+      </select>
+
+      <button onclick="addBill()">Add Bill</button>
+    </section>
+
+    <!-- ACTION -->
+    <section>
+      <button onclick="calculate()">Calculate</button>
+    </section>
+
+    <!-- OUTPUT -->
+    <section>
+      <h2>Results</h2>
+      <pre id="output"></pre>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
