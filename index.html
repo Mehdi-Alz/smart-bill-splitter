@@ -9,11 +9,12 @@
 
   <div class="app">
 
-    <!-- SIDEBAR INPUT -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
 
       <h2>Control Panel</h2>
 
+      <!-- USERS -->
       <div class="card">
         <h3>Add User</h3>
         <input id="name" placeholder="Name">
@@ -22,9 +23,27 @@
         <button onclick="addUser()">Add User</button>
       </div>
 
+      <!-- BILLS -->
       <div class="card">
         <h3>Add Bill</h3>
-        <input id="billType" placeholder="Type">
+
+        <!-- FIXED: REAL DROPDOWN -->
+        <select id="billType" onchange="handleBillTypeChange()">
+          <option value="rent">Rent</option>
+          <option value="electricity">Electricity</option>
+          <option value="water">Water</option>
+          <option value="internet">Internet</option>
+          <option value="gas">Gas</option>
+          <option value="other">Other</option>
+        </select>
+
+        <!-- FIXED: ONLY SHOWS WHEN OTHER IS SELECTED -->
+        <input 
+          id="customBillName" 
+          placeholder="Enter custom bill type"
+          style="display:none;"
+        >
+
         <input id="amount" type="number" placeholder="Amount">
 
         <select id="splitType">
@@ -40,7 +59,7 @@
 
     </aside>
 
-    <!-- MAIN DASHBOARD -->
+    <!-- DASHBOARD -->
     <main class="dashboard">
 
       <h1>Smart Bill Dashboard</h1>
@@ -69,5 +88,6 @@
   </div>
 
   <script src="app.js"></script>
+
 </body>
 </html>

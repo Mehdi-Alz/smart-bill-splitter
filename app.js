@@ -2,17 +2,31 @@ let users = [];
 let bills = [];
 
 /* -------------------------
-   SAFE HELPERS
+   BILL TYPE CONTROL
 --------------------------*/
 
-// Prevent division by zero crashes
-function safeDivide(numerator, denominator) {
-  if (!denominator || denominator === 0) return 0;
-  return numerator / denominator;
+function handleBillTypeChange() {
+  const select = document.getElementById("billType");
+  const custom = document.getElementById("customBillName");
+
+  if (select.value === "other") {
+    custom.style.display = "block";
+  } else {
+    custom.style.display = "none";
+    custom.value = "";
+  }
 }
 
 /* -------------------------
-   CORE DATA FUNCTIONS
+   SAFE HELPER
+--------------------------*/
+
+function safeDivide(a, b) {
+  return b ? a / b : 0;
+}
+
+/* -------------------------
+   ADD USER
 --------------------------*/
 
 function addUser() {
@@ -20,7 +34,7 @@ function addUser() {
   const roomSize = Number(document.getElementById("roomSize").value);
   const days = Number(document.getElementById("days").value);
 
-  if (!name) return alert("Name is required");
+  if (!name) return alert("Name required");
 
   users.push({
     id: Date.now(),
@@ -33,31 +47,54 @@ function addUser() {
   updateUI();
 }
 
+/* -------------------------
+   ADD BILL (FIXED)
+--------------------------*/
+
 function addBill() {
-  const type = document.getElementById("billType").value.trim();
+  const typeSelect = document.getElementById("billType");
+  const customInput = document.getElementById("customBillName");
   const amount = Number(document.getElementById("amount").value);
   const splitType = document.getElementById("splitType").value;
 
-  if (!type || amount <= 0) return alert("Invalid bill input");
+  if (amount <= 0) {
+    return alert("Invalid amount");
+  }
+
+  let type = typeSelect.value;
+  let name = type;
+
+  if (type === "other") {
+    if (!customInput.value.trim()) {
+      return alert("Enter custom bill type");
+    }
+    name = customInput.value.trim();
+  }
 
   bills.push({
     id: Date.now(),
     type,
+    name,
     amount,
     splitType
   });
+
+  /* RESET UI STATE */
+  typeSelect.value = "rent";
+  customInput.value = "";
+  customInput.style.display = "none";
+  document.getElementById("amount").value = "";
 
   updateUI();
 }
 
 /* -------------------------
-   CORE CALCULATION ENGINE
+   CALCULATE
 --------------------------*/
 
 function calculate() {
   let result = {};
 
-  // initialize users
   users.forEach(u => {
     result[u.id] = {
       name: u.name,
@@ -67,7 +104,6 @@ function calculate() {
     };
   });
 
-  // apply each bill
   bills.forEach(bill => {
     let shares = splitBill(bill);
 
@@ -78,7 +114,6 @@ function calculate() {
     }
   });
 
-  // finalize balances
   for (let id in result) {
     result[id].balance = result[id].paid - result[id].totalDue;
   }
@@ -87,7 +122,7 @@ function calculate() {
 }
 
 /* -------------------------
-   BILL SPLITTING LOGIC
+   SPLIT LOGIC
 --------------------------*/
 
 function splitBill(bill) {
@@ -95,32 +130,22 @@ function splitBill(bill) {
 
   if (!users.length) return shares;
 
-  // Equal split
   if (bill.splitType === "equal") {
     let share = safeDivide(bill.amount, users.length);
-
-    users.forEach(u => {
-      shares[u.id] = share;
-    });
+    users.forEach(u => shares[u.id] = share);
   }
 
-  // Presence-based split
   if (bill.splitType === "presence") {
-    let totalDays = users.reduce((sum, u) => sum + u.daysPresent, 0);
-
+    let total = users.reduce((s, u) => s + u.daysPresent, 0);
     users.forEach(u => {
-      let ratio = safeDivide(u.daysPresent, totalDays);
-      shares[u.id] = ratio * bill.amount;
+      shares[u.id] = safeDivide(u.daysPresent, total) * bill.amount;
     });
   }
 
-  // Room size split
   if (bill.splitType === "room_size") {
-    let totalSize = users.reduce((sum, u) => sum + u.roomSize, 0);
-
+    let total = users.reduce((s, u) => s + u.roomSize, 0);
     users.forEach(u => {
-      let ratio = safeDivide(u.roomSize, totalSize);
-      shares[u.id] = ratio * bill.amount;
+      shares[u.id] = safeDivide(u.roomSize, total) * bill.amount;
     });
   }
 
@@ -128,54 +153,48 @@ function splitBill(bill) {
 }
 
 /* -------------------------
-   UI RENDERING
+   UI
 --------------------------*/
 
 function updateUI() {
-  const usersBox = document.getElementById("usersBox");
-  const billsBox = document.getElementById("billsBox");
+  document.getElementById("usersBox").innerHTML =
+    users.map(u => `
+      <div class="item">
+        <b>${u.name}</b><br>
+        Room: ${u.roomSize} | Days: ${u.daysPresent}
+      </div>
+    `).join("");
 
-  usersBox.innerHTML = users.map(u => `
-    <div class="item">
-      <b>${u.name}</b><br>
-      Room: ${u.roomSize} | Days: ${u.daysPresent}
-    </div>
-  `).join("");
-
-  billsBox.innerHTML = bills.map(b => `
-    <div class="item">
-      <b>${b.type}</b><br>
-      Amount: ${b.amount} | ${b.splitType}
-    </div>
-  `).join("");
+  document.getElementById("billsBox").innerHTML =
+    bills.map(b => `
+      <div class="item">
+        <b>${b.name}</b><br>
+        ${b.type} | ${b.amount}
+      </div>
+    `).join("");
 }
 
 /* -------------------------
-   RESULT RENDERING
+   RESULTS
 --------------------------*/
 
 function renderResults(result) {
   let output = "";
 
   for (let id in result) {
-    const r = result[id];
+    let r = result[id];
 
     output += `
 ${r.name}
-  Total Due: ${r.totalDue.toFixed(2)}
-  Paid:      ${r.paid.toFixed(2)}
-  Balance:   ${r.balance.toFixed(2)}
+  Due: ${r.totalDue.toFixed(2)}
+  Paid: ${r.paid.toFixed(2)}
+  Balance: ${r.balance.toFixed(2)}
 
-------------------------
+-------------------
 `;
   }
 
   document.getElementById("output").textContent = output;
 }
 
-/* -------------------------
-   INIT SAFE STATE
---------------------------*/
-
-// ensures UI doesn’t break on refresh/start
 updateUI();
