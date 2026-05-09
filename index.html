@@ -2,89 +2,105 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Bill Splitter</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h2>🏠 Bill Splitter</h2>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <h3>Add User</h3>
+    <input id="name" placeholder="Name">
+    <input id="room" type="number" placeholder="Room Size (m²)">
+    <input id="days" type="number" placeholder="Days Present">
+    <button onclick="addUser()">Add User</button>
 
-      <h2>Control Panel</h2>
+    <h3>Add Bill</h3>
+
+    <select id="billType">
+      <option value="rent">Rent</option>
+      <option value="electricity">Electricity</option>
+      <option value="water">Water</option>
+      <option value="internet">Internet</option>
+      <option value="gas">Gas</option>
+      <option value="other">Other</option>
+    </select>
+
+    <input id="customBillType" placeholder="Custom type" style="display:none;">
+
+    <input id="amount" type="number" placeholder="Amount">
+
+    <select id="splitType">
+      <option value="equal">Equal</option>
+      <option value="room">By Room Size</option>
+      <option value="days">By Days Present</option>
+    </select>
+
+    <button onclick="addBill()">Add Bill</button>
+  </div>
+
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <button onclick="testData()">Test Data</button>
+      <button onclick="clearAllData()">Clear All</button>
+    </div>
+
+    <!-- TODAY'S DATE DISPLAY -->
+    <div class="today-date" id="todayDate"></div>
+
+    <h1>Dashboard</h1>
+
+    <!-- GRID -->
+    <div class="grid">
 
       <!-- USERS -->
       <div class="card">
-        <h3>Add User</h3>
-        <input id="name" placeholder="Name">
-        <input id="roomSize" type="number" placeholder="Room Size">
-        <input id="days" type="number" placeholder="Days Present">
-        <button onclick="addUser()">Add User</button>
+        <h3>👥 Users</h3>
+        <div id="usersContainer"></div>
       </div>
 
       <!-- BILLS -->
       <div class="card">
-        <h3>Add Bill</h3>
-
-        <!-- FIXED: REAL DROPDOWN -->
-        <select id="billType" onchange="handleBillTypeChange()">
-          <option value="rent">Rent</option>
-          <option value="electricity">Electricity</option>
-          <option value="water">Water</option>
-          <option value="internet">Internet</option>
-          <option value="gas">Gas</option>
-          <option value="other">Other</option>
-        </select>
-
-        <!-- FIXED: ONLY SHOWS WHEN OTHER IS SELECTED -->
-        <input 
-          id="customBillName" 
-          placeholder="Enter custom bill type"
-          style="display:none;"
-        >
-
-        <input id="amount" type="number" placeholder="Amount">
-
-        <select id="splitType">
-          <option value="equal">Equal</option>
-          <option value="presence">Presence</option>
-          <option value="room_size">Room Size</option>
-        </select>
-
-        <button onclick="addBill()">Add Bill</button>
+        <h3>📋 Bills</h3>
+        <div id="billsContainer"></div>
       </div>
 
-      <button class="primary" onclick="calculate()">Calculate</button>
-
-    </aside>
-
-    <!-- DASHBOARD -->
-    <main class="dashboard">
-
-      <h1>Smart Bill Dashboard</h1>
-
-      <div class="grid">
-
-        <section class="panel">
-          <h3>Users</h3>
-          <div id="usersBox"></div>
-        </section>
-
-        <section class="panel">
-          <h3>Bills</h3>
-          <div id="billsBox"></div>
-        </section>
-
-        <section class="panel full">
-          <h3>Results</h3>
-          <pre id="output"></pre>
-        </section>
-
+      <!-- SUMMARY -->
+      <div class="card summary-card">
+        <h3>📊 Summary</h3>
+        <div id="summaryContainer"></div>
       </div>
 
-    </main>
+      <!-- TRANSACTIONS -->
+      <div class="card" style="grid-column: span 2;">
+        <h3>📜 Transactions</h3>
+        <div id="transactionsContainer"></div>
+      </div>
 
+    </div>
+
+  </div>
+
+
+  <!-- PAYMENT MODAL -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-content">
+      <h3>💳 Make Payment</h3>
+
+      <input id="payAmount" type="number" placeholder="Amount">
+
+      <input type="date" id="paymentDate">
+
+      <button onclick="confirmPayment()">Confirm Payment</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
   </div>
 
   <script src="app.js"></script>
