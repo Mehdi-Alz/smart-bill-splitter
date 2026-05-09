@@ -7,44 +7,64 @@
 </head>
 <body>
 
-  <div class="container">
+  <div class="app">
 
-    <h1>Smart Bill Splitter</h1>
+    <!-- SIDEBAR INPUT -->
+    <aside class="sidebar">
 
-    <!-- USERS -->
-    <section>
-      <h2>Add User</h2>
-      <input id="name" placeholder="Name">
-      <input id="roomSize" type="number" placeholder="Room Size">
-      <input id="days" type="number" placeholder="Days Present">
-      <button onclick="addUser()">Add User</button>
-    </section>
+      <h2>Control Panel</h2>
 
-    <!-- BILLS -->
-    <section>
-      <h2>Add Bill</h2>
-      <input id="billType" placeholder="Type (electricity, rent...)">
-      <input id="amount" type="number" placeholder="Amount">
+      <div class="card">
+        <h3>Add User</h3>
+        <input id="name" placeholder="Name">
+        <input id="roomSize" type="number" placeholder="Room Size">
+        <input id="days" type="number" placeholder="Days Present">
+        <button onclick="addUser()">Add User</button>
+      </div>
 
-      <select id="splitType">
-        <option value="equal">Equal</option>
-        <option value="presence">Presence</option>
-        <option value="room_size">Room Size</option>
-      </select>
+      <div class="card">
+        <h3>Add Bill</h3>
+        <input id="billType" placeholder="Type">
+        <input id="amount" type="number" placeholder="Amount">
 
-      <button onclick="addBill()">Add Bill</button>
-    </section>
+        <select id="splitType">
+          <option value="equal">Equal</option>
+          <option value="presence">Presence</option>
+          <option value="room_size">Room Size</option>
+        </select>
 
-    <!-- ACTION -->
-    <section>
-      <button onclick="calculate()">Calculate</button>
-    </section>
+        <button onclick="addBill()">Add Bill</button>
+      </div>
 
-    <!-- OUTPUT -->
-    <section>
-      <h2>Results</h2>
-      <pre id="output"></pre>
-    </section>
+      <button class="primary" onclick="calculate()">Calculate</button>
+
+    </aside>
+
+    <!-- MAIN DASHBOARD -->
+    <main class="dashboard">
+
+      <h1>Smart Bill Dashboard</h1>
+
+      <div class="grid">
+
+        <section class="panel">
+          <h3>Users</h3>
+          <div id="usersBox"></div>
+        </section>
+
+        <section class="panel">
+          <h3>Bills</h3>
+          <div id="billsBox"></div>
+        </section>
+
+        <section class="panel full">
+          <h3>Results</h3>
+          <pre id="output"></pre>
+        </section>
+
+      </div>
+
+    </main>
 
   </div>
 

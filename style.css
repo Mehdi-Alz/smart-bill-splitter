@@ -1,51 +1,110 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    margin: 0;
-    padding: 20px;
-  }
-  
-  .container {
-    max-width: 700px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  section {
-    margin-bottom: 20px;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  input, select {
-    display: block;
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
-  }
-  
-  button {
-    padding: 10px;
-    width: 100%;
-    background: black;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background: #333;
-  }
-  
-  pre {
-    background: #111;
-    color: #0f0;
-    padding: 10px;
-    border-radius: 5px;
-  }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+/* APP LAYOUT */
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 300px;
+  background: #111827;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+}
+
+/* CARDS */
+.card {
+  background: #1f2937;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  background: #111827;
+  border: 1px solid #374151;
+  color: white;
+  border-radius: 6px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #374151;
+  color: white;
+}
+
+button:hover {
+  background: #4b5563;
+}
+
+button.primary {
+  background: #2563eb;
+  margin-top: 20px;
+}
+
+button.primary:hover {
+  background: #1d4ed8;
+}
+
+/* DASHBOARD */
+.dashboard {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+/* PANELS */
+.panel {
+  background: #1f2937;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.panel.full {
+  grid-column: span 2;
+}
+
+pre {
+  background: #0b1220;
+  padding: 10px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+/* LIST ITEMS */
+.item {
+  background: #111827;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 6px;
+}
